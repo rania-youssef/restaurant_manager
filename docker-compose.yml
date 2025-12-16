@@ -1,0 +1,28 @@
+services:
+  php:
+    image: beauty-shop-php:latest
+    container_name: beauty-shop-php
+    volumes:
+      - ./backend/symfony:/var/www/html
+    ports:
+      - "8000:8000"
+    command: php-fpm
+
+  vue:
+    image: node:20
+    container_name: beauty-shop-vue
+    working_dir: /app
+    volumes:
+      - ./frontend/vue:/app
+    command: npm run dev -- --host
+    ports:
+      - "5173:5173"
+
+  db:
+    image: mysql:8
+    container_name: beauty-shop-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: symfony
+    ports:
+      - "3306:3306"

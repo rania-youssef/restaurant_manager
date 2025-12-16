@@ -1,0 +1,9 @@
+ingredients_get:
+    path: /ingredients
+    controller: App\Controller\BackOffice\IngredientController::get
+    methods: [GET]
+
+ingredients_post:
+    path: /ingredients
+    controller: App\Controller\BackOffice\IngredientController::post
+    methods: [POST]
