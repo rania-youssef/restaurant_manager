@@ -1,7 +1,7 @@
 services:
   php:
     image: beauty-shop-php:latest
-    container_name: beauty-shop-php
+    container_name: restaurant-php
     volumes:
       - ./backend/symfony:/var/www/html
     ports:
@@ -10,7 +10,7 @@ services:
 
   vue:
     image: node:20
-    container_name: beauty-shop-vue
+    container_name: restaurant-vue
     working_dir: /app
     volumes:
       - ./frontend/vue:/app
@@ -20,9 +20,9 @@ services:
 
   db:
     image: mysql:8
-    container_name: beauty-shop-db
+    container_name: restaurant-db
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: symfony
+      MYSQL_DATABASE: restaurant-db
     ports:
       - "3306:3306"

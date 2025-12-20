@@ -5,6 +5,7 @@ namespace App\Manager\BackOffice;
 
 use App\Entity\Ingredient;
 use App\Repository\BackOffice\IngredientRepository;
+use App\Repository\BackOffice\IngredientCategoryRepository;
 
 class IngredientManager
 {
@@ -14,12 +15,21 @@ class IngredientManager
     private IngredientRepository $ingredientRepository;
 
     /**
+     * @var IngredientCategoryRepository $ingredientCategoryRepository
+     */
+    private IngredientCategoryRepository $ingredientCategoryRepository;
+
+    /**
      * @param IngredientRepository $ingredientRepository
+     * @param IngredientCategoryRepository $ingredientCategoryRepository
      */
 
-    public function __construct(IngredientRepository $ingredientRepository)
-    {
+    public function __construct(
+        IngredientRepository $ingredientRepository,
+        IngredientCategoryRepository $ingredientCategoryRepository
+    ) {
         $this->ingredientRepository = $ingredientRepository;
+        $this->ingredientCategoryRepository = $ingredientCategoryRepository;
     }
 
     /**
@@ -30,7 +40,7 @@ class IngredientManager
         if (empty($data) === true) {
             return $this->ingredientRepository->findAll();
         } if (isset($data['id']) === true) {
-            $ingredient = $this->ingredientRepository->find($data['id']);
+            $ingredient = $this->ingredientRepository->find((int) $data['id']);
             return $ingredient ? [$ingredient] : [];
         } else {
             return $this->ingredientRepository->findBy($data);
@@ -48,11 +58,14 @@ class IngredientManager
             if (isset($data['label']) === true) {
                 $ingredient->setLabel($data['label']);
             }
-            if (isset($data['quantity']) === true) {
-                $ingredient->setQuantityValue($data['quantity']);
+            if (isset($data['quantityValue']) === true) {
+                $ingredient->setQuantityValue($data['quantityValue']);
             }
             if (isset($data['unit']) === true) {
                 $ingredient->setUnit($data['unit']);
+            }
+            if (isset($data['ingredientCategory']) === true && $data['ingredientCategory'] > 0) {
+                $ingredient->setCategory($this->ingredientCategoryRepository->find((int) $data['ingredientCategory']));
             }
             return $this->ingredientRepository->save($ingredient);
         } catch(\Exception $e) {

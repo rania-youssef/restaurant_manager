@@ -1,0 +1,27 @@
+security:
+    password_hashers:
+        App\Entity\Security\User:
+            algorithm: auto
+
+    providers:
+        users:
+            entity:
+                class: App\Entity\Security\User
+                property: email
+
+    firewalls:
+        login:
+            pattern: ^/api/login
+            stateless: true
+            security: false
+
+        main:
+            pattern: ^/
+            stateless: true
+            custom_authenticators:
+                - App\Security\JwtAuthenticator
+
+    access_control:
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api, roles: ROLE_USER }
+        - { path: ^/back-office, roles: ROLE_USER }

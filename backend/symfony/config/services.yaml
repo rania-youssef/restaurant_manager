@@ -5,3 +5,13 @@ services:
 
     App\:
         resource: '../src/'
+
+    App\Security\JwtService:
+        arguments:
+            $secret: '%env(JWT_SECRET)%'
+            $ttl: '%env(int:JWT_TTL)%'
+
+    App\Security\JwtAuthenticator:
+        arguments:
+            $jwtService: '@App\Security\JwtService'
+            $userProvider: '@security.user.provider.concrete.users'

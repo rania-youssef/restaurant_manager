@@ -15,4 +15,17 @@ class IngredientCategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, IngredientCategory::class);
     }
+
+    /**
+     * Summary of save
+     * @param IngredientCategory $ingredientCategory
+     * @return IngredientCategory
+     */
+    public function save(IngredientCategory $ingredientCategory): IngredientCategory
+    {
+        $em = $this->getEntityManager();
+        $em->persist($ingredientCategory);
+        $em->flush();
+        return $ingredientCategory;
+    }
 }

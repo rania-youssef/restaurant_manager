@@ -1,9 +1,43 @@
+api_login:
+    path: /api/login
+    controller: App\Controller\Security\AuthController::login
+    methods: [POST]
 ingredients_get:
-    path: /ingredients
+    path: /back-office/ingredients
     controller: App\Controller\BackOffice\IngredientController::get
     methods: [GET]
 
 ingredients_post:
-    path: /ingredients
+    path: /back-office/ingredients
     controller: App\Controller\BackOffice\IngredientController::post
+    methods: [POST]
+
+ingredient_category_get:
+    path: /back-office/ingredient-category
+    controller: App\Controller\BackOffice\IngredientCategoryController::get
+    methods: [GET]
+
+ingredient_category_post:
+    path: /back-office/ingredient-category
+    controller: App\Controller\BackOffice\IngredientCategoryController::post
+    methods: [POST]
+
+dish_get:
+    path: /back-office/dish
+    controller: App\Controller\BackOffice\DishController::get
+    methods: [GET]
+
+dish_post:
+    path: /back-office/dish
+    controller: App\Controller\BackOffice\DishController::post
+    methods: [POST]
+
+dish_ingredient_get:
+    path: /back-office/dish-ingredient
+    controller: App\Controller\BackOffice\DishIngredientController::get
+    methods: [GET]
+
+dish_ingredient_post:
+    path: /back-office/dish-ingredient
+    controller: App\Controller\BackOffice\DishIngredientController::post
     methods: [POST]

@@ -4,7 +4,6 @@ namespace App\Repository\BackOffice;
 
 use App\Entity\Ingredient;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +16,11 @@ class IngredientRepository extends ServiceEntityRepository
         parent::__construct($registry, Ingredient::class);
     }
 
+    /**
+     * Summary of save
+     * @param Ingredient $ingredient
+     * @return Ingredient
+     */
     public function save(Ingredient $ingredient): Ingredient
     {
         $em = $this->getEntityManager();

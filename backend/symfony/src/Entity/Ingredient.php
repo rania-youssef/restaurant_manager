@@ -31,15 +31,16 @@ class Ingredient
     private ?IngredientCategory $category= null;
 
     /**
-     * @var Collection<int, Dishe>
+     * @var Collection<int, DishIngredient>
      */
-    #[ORM\ManyToMany(targetEntity: Dishe::class, mappedBy: 'ingredients')]
-    private Collection $dishe;
+    #[ORM\OneToMany(targetEntity: DishIngredient::class, mappedBy: 'ingredient')]
+    private Collection $dishIngredients;
 
     public function __construct()
     {
-        $this->dishe = new ArrayCollection();
+        $this->dishIngredients = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -107,27 +108,30 @@ class Ingredient
     }
 
     /**
-     * @return Collection<int, Dishe>
+     * @return Collection<int, DishIngredient>
      */
-    public function getDishe(): Collection
+    public function getDishIngredients(): Collection
     {
-        return $this->dishe;
+        return $this->dishIngredients;
     }
 
-    public function addDish(Dishe $dish): static
+    public function addDishIngredient(DishIngredient $dishIngredient): static
     {
-        if (!$this->dishe->contains($dish)) {
-            $this->dishe->add($dish);
-            $dish->addIngredient($this);
+        if (!$this->dishIngredients->contains($dishIngredient)) {
+            $this->dishIngredients->add($dishIngredient);
+            $dishIngredient->setIngredient($this);
         }
 
         return $this;
     }
 
-    public function removeDish(Dishe $dish): static
+    public function removeDishIngredient(DishIngredient $dishIngredient): static
     {
-        if ($this->dishe->removeElement($dish)) {
-            $dish->removeIngredient($this);
+        if ($this->dishIngredients->removeElement($dishIngredient)) {
+            // set the owning side to null (unless already changed)
+            if ($dishIngredient->getIngredient() === $this) {
+                $dishIngredient->setIngredient(null);
+            }
         }
 
         return $this;
@@ -138,10 +142,6 @@ class Ingredient
      * @return array
      */
     public function jsonSerialize()  {
-        $dishes = [];
-        foreach ($this->getDishe() as $dishe) {
-            $dishes[] = $dishe->jsonSerialize();
-        }
         $category = [];
         if ($this->getCategory()) {
             $category['id'] = $this->getCategory()->getId();
@@ -152,8 +152,7 @@ class Ingredient
             'label' => $this->getLabel(),
             'quantityValue' => $this->getQuantityValue(),
             'unit' => $this->getUnit(),
-            'category' => $category,
-            'dishes' => $dishes
+            'category' => $category
         ];
     }
 }
